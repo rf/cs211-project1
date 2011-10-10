@@ -1,0 +1,76 @@
+\documentclass[10pt]{article}
+
+\usepackage{color}
+\usepackage{verbatim}
+
+\usepackage[T1]{fontenc}
+
+\setlength{\headsep}{.33in}
+\setlength{\topsep}{0in}
+\setlength{\topmargin}{-1in}
+\setlength{\topskip}{0.4in}    % between header and text
+\setlength{\textheight}{11in} % height of main text
+\setlength{\textwidth}{7.05in}    % width of text
+\setlength{\oddsidemargin}{-0.30in} % odd page left margin
+\setlength{\evensidemargin}{-0.30in} % even page left margin
+\setlength{\parindent}{0in}   % remove paragraph indenting
+
+\linespread{1.13}
+
+\newcommand{\head}[1]{
+   \begin{tabular*}{7.1in}{@{}l@{\extracolsep{\fill}}r}
+      Russell Frank & \today \\
+   \end{tabular*}
+   \begin{center} \LARGE #1 \normalsize \end{center}
+   \vskip 0.1in
+}
+
+\begin{document}
+
+\head{CS112 Assignment \#1}
+
+\section{SYNOPSIS}
+wordstat -l | -w | -p | -h INPUT\_FILE
+
+\section{USAGE}
+
+\begin{tabular}{ll}
+   -l & print the number of lines in INPUT\_FILE \\
+   -w & print the number of words in INPUT\_FILE \\
+   -p & print a report of palindromes in the INPUT\_FILE including frequency
+        and whether or not they appear in dict.txt\\
+   -h & print usage \\
+\end{tabular}
+
+\section{DESIGN}
+
+I used C standard library functions for all data structure requirements.
+I needed something with fast lookup and insert for the dictionary and the
+list of words; so, I used bsearch for lookups and qsort for sorting. \\
+
+Unfortunately, since I wasn't allowed to use some standard C library functions,
+I had to rewrite bsearch and qsort.  These are in mystdlib.c.
+
+The design is a little inefficient because I don't use the results of the
+failed bsearch()es for inserting values into the array.  So, I append a
+value on the end of the array and qsort().  This could be considered a flaw
+in libc's bsearch function.
+
+\section{RUNNING TIME}
+
+The searches use a binary search and the inserts use qsort().  My qsort() is
+implemented as a quicksort, which on average has sorting time $O(n \log n)$.
+
+In the average case, binary searches are $O(\log n)$.  So, the running time of
+my algorithm in the average case is $O(n \log n + \log n) = O(n \log n)$.
+
+\section{SPACE COMPLEXITY}
+My algorithm uses no extra memory past what is needed to store the words
+themselves.  So, $O(k + n)$, where $k$ is the number of files in the
+dictionary and $n$ is the number of words in the input file.
+
+\section{CHALLENGES}
+None.
+
+\end{document}
+
